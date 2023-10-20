@@ -23,7 +23,7 @@ class H2test:
         self.wait_per_cycle = 1
         self.endless_verify = False
         self.option_type = 0
-        self.test_size_mb = 3072
+        self.test_size_mb = 2560
         self.written_files = []
         self.read_speed_mean = 0
         self.read_speed_min = 0
@@ -55,6 +55,12 @@ class H2test:
                     break
                 if not ret:
                     continue
+            if 1 == self.option_type:
+                # 构建文件路径匹配模式
+                file_pattern = os.path.join(self.root_directory, "*.h2w")
+                # 获取匹配的文件列表并按文件名排序
+                file_list = sorted(glob.glob(file_pattern))
+                self.written_files = file_list
             self.verify_process()
             self.write_summary_speed()
             if i != self.cycles - 1:
